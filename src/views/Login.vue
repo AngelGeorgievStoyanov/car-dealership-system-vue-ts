@@ -2,6 +2,8 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers } from "@vuelidate/validators";
 import * as userService from "../services/userService";
+import { useUserStore } from "../store/userStore";
+import { mapActions } from "pinia";
 
 export default {
   setup: () => ({ v$: useVuelidate() }),
@@ -24,6 +26,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(useUserStore, ["setUser"]),
     async login() {
       const isValid = await this.v$.$validate();
 
@@ -35,8 +38,8 @@ export default {
 
       await userService
         .login(user.email, user.password)
-        .then((token) => {
-          console.log(token);
+        .then((user) => {
+          this.setUser(user);
           this.$router.push("/");
         })
         .catch((error) => {
