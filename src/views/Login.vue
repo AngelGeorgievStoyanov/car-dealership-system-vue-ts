@@ -1,6 +1,7 @@
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers } from "@vuelidate/validators";
+import * as userService from "../services/userService";
 
 export default {
   setup: () => ({ v$: useVuelidate() }),
@@ -25,17 +26,25 @@ export default {
   methods: {
     async login() {
       const isValid = await this.v$.$validate();
-      console.log("Is form valid?", isValid);
 
-      if (isValid) {
-        const formData = {
-          email: this.email,
-          password: this.password,
-        };
+      if (!isValid) return;
+      const user = {
+        email: this.email,
+        password: this.password,
+      };
 
-        // Използвайте formData по ваше усмотрение (например, изпращане към сървър и др.)
-        console.log("Form data:", formData);
-      }
+      await userService
+        .login(user.email, user.password)
+        .then((token) => {
+          console.log(token);
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          this.errorMessage = error.message;
+          setTimeout(() => {
+            this.errorMessage = "";
+          }, 5000);
+        });
     },
   },
 };
@@ -132,6 +141,10 @@ export default {
 input {
   width: 200px;
   margin-left: 5px;
+}
+
+.error {
+  color: red;
 }
 
 #error {

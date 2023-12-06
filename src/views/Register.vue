@@ -1,6 +1,7 @@
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, sameAs, helpers } from "@vuelidate/validators";
+import * as userService from "../services/userService";
 
 export default {
   setup: () => ({ v$: useVuelidate() }),
@@ -44,15 +45,28 @@ export default {
   methods: {
     async register() {
       const isValid = await this.v$.$validate();
+      if (!isValid) return;
 
-      const formData = {
+      const user = {
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
         password: this.password,
         confirmpass: this.confirmpass,
       };
-      console.log(formData);
+
+      await userService
+        .regisrer(user)
+        .then((token) => {
+          console.log(token);
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          this.errorMessage = error.message;
+          setTimeout(() => {
+            this.errorMessage = "";
+          }, 5000);
+        });
     },
   },
 };
@@ -179,7 +193,7 @@ export default {
 }
 
 .error {
-  border-color: red;
+  color: red;
 }
 
 .input-errors {
