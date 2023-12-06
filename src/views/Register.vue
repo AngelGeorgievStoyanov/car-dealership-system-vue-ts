@@ -30,7 +30,10 @@ export default {
           "Confirm Password is required!",
           required
         ),
-        sameAs: sameAs(this.password),
+        sameAs: helpers.withMessage(
+          "Password and Confirm Password must match!",
+          sameAs(this.password)
+        ),
       },
       email: {
         required: helpers.withMessage("Email is required!", required),
@@ -59,8 +62,8 @@ export default {
   <div id="register-div">
     <div id="form">
       <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-      <h2>REGISTER PAGE</h2>
       <form @submit.prevent="register" id="register-form" class="register">
+        <h2>REGISTER PAGE</h2>
         <div :class="{ error: v$.firstName.$errors.length }">
           <label for="firstName">First Name:</label>
           <input v-model="firstName" type="text" id="firstName" />
@@ -159,8 +162,6 @@ export default {
   box-shadow: 3px 2px 5px black;
 }
 
-
-
 #register-form {
   display: flex;
   flex-direction: column;
@@ -202,5 +203,9 @@ span {
 
 label {
   width: 100px;
+}
+input {
+  width: 200px;
+  margin-left: 5px;
 }
 </style>
