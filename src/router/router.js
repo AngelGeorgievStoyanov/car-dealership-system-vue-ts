@@ -1,8 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import Home  from '../views/Home.vue'
-import Register  from '../views/Register.vue'
-import Login  from '../views/Login.vue'
+import Home from '../views/Home.vue'
+import Register from '../views/Register.vue'
+import Login from '../views/Login.vue'
+import Admin from '../views/Admin.vue'
+import NotFound from '../views/NotFound.vue'
+import { useUserStore } from '../store/userStore';
+
+
+function validateAdmin() {
+    const userStore = useUserStore();
+    return userStore.role === 'admin' ? true : { path: '/notfound' }
+
+}
 
 
 
@@ -10,6 +20,8 @@ const routes = [
     { path: '/', component: Home },
     { path: '/register', component: Register },
     { path: '/login', component: Login },
+    { path: '/admin', component: Admin, beforeEnter: validateAdmin },
+    { path: '/notfound', component: NotFound },
 
 ];
 

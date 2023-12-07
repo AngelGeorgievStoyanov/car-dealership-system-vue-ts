@@ -1,31 +1,50 @@
 <script>
 import { RouterLink } from "vue-router";
+import { useUserStore } from "../store/userStore";
+import { mapActions, mapState } from "pinia";
+import { email } from "@vuelidate/validators";
 
 export default {
   components: {
     RouterLink,
+  },
+  computed: {
+    ...mapState(useUserStore, ["email"]),
+    ...mapState(useUserStore, ["role"]),
+  },
+  methods: {
+    ...mapActions(useUserStore, ["logout"]),
   },
 };
 </script>
 
 <template>
   <header id="header" class="header">
-    <nav  id="nav" class="nav">
+    <nav id="nav" class="nav">
       <ul class="nav-logo">
         <li id="logo">
-          <RouterLink :to="{ path: '/' }">LOGO</RouterLink>
+          <RouterLink to="/">LOGO</RouterLink>
+        </li>
+        <li class="li" v-if="email">
+          <RouterLink to="/">Welcome {{ this.email }}!</RouterLink>
         </li>
       </ul>
 
       <ul id="nav-ul" class="nav-ul">
         <li class="li">
-          <RouterLink :to="{ path: '/' }">Home</RouterLink>
+          <RouterLink to="/">Home</RouterLink>
         </li>
-        <li>
-          <RouterLink :to="{ path: '/login' }">Login</RouterLink>
+        <li v-if="!email" class="li">
+          <RouterLink to="/login">Login</RouterLink>
         </li>
-        <li class="li">
-          <RouterLink :to="{ path: '/register' }">Register</RouterLink>
+        <li v-if="role === 'admin'" class="li">
+          <RouterLink to="/admin">Admin</RouterLink>
+        </li>
+        <li v-if="!email" class="li">
+          <RouterLink to="/register">Register</RouterLink>
+        </li>
+        <li v-if="email" class="li">
+          <RouterLink to="/" @click="logout">Logout</RouterLink>
         </li>
       </ul>
     </nav>
@@ -33,7 +52,8 @@ export default {
 </template>
 
 <style scoped>
-nav#nav {
+nav#nav,
+.nav-logo {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -54,7 +74,7 @@ ul#nav-ul {
   list-style-type: none;
 }
 
-ul#nav-ul > li {
+li {
   margin-right: 10px;
   margin-left: 10px;
   padding-right: 10px;
@@ -62,12 +82,12 @@ ul#nav-ul > li {
   list-style-type: none;
 }
 
-#logo > a {
+a {
   color: white;
   text-decoration: none;
 }
 
-.nav-ul > li > a {
+li > a {
   color: white;
   text-decoration: none;
 }
