@@ -1,4 +1,4 @@
-import {API_URL} from '../utils/baseUrl'
+import { API_URL } from '../utils/baseUrl'
 
 
 export async function regisrer(user) {
@@ -39,4 +39,23 @@ export async function login(email, password) {
 
 
     return response.json()
+}
+
+export async function getAllUsers() {
+    const response = await fetch(`${API_URL}/users/`)
+    if (response.status >= 400) {
+        const result = await response.json();
+        throw new Error(result);
+    }
+    return response.json();
+}
+
+export async function findUserById(id) {
+
+    const response = await fetch(`${API_URL}/users/${id}`)
+    if (response.status >= 400) {
+        const result = await response.json();
+        throw new Error(result);
+    }
+    return response.json();
 }
