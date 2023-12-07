@@ -13,6 +13,11 @@ export default {
       }),
     },
   },
+  methods: {
+    editUser() {
+      this.$router.push(`/adminEdit/${this.user._id}`);
+    },
+  },
 };
 </script>
 
@@ -22,7 +27,7 @@ export default {
     <h3>Last name: {{ user.lastName }}</h3>
     <h3>Email: {{ user.email }}</h3>
     <h5>Role: {{ user.role }}</h5>
-    <button>Edit user</button>
+    <button @click="editUser">Edit user</button>
   </section>
 </template>
 

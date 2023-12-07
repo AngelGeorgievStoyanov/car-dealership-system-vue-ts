@@ -59,3 +59,20 @@ export async function findUserById(id) {
     }
     return response.json();
 }
+
+
+export async function editUser(id, user) {
+
+    const response = await fetch(`${API_URL}/users/${id}`, {
+        method: 'PUT',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    })
+    if (response.status >= 400) {
+        const result = await response.json();
+        throw new Error(result);
+    }
+    return response.json();
+}

@@ -5,6 +5,7 @@ import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import NotFound from '../views/NotFound.vue'
 import Admin from '../views/Admin/Admin.vue'
+import AdminEdit from '../views/Admin/AdminEdit.vue'
 import { useUserStore } from '../store/userStore';
 
 
@@ -21,6 +22,7 @@ const routes = [
     { path: '/register', component: Register },
     { path: '/login', component: Login },
     { path: '/admin', component: Admin, beforeEnter: validateAdmin },
+    { path: '/adminEdit/:_id', component: AdminEdit, beforeEnter: validateAdmin },
     { path: '/notfound', component: NotFound },
 
 ];
