@@ -37,6 +37,9 @@ export default {
         <li v-if="!email" class="li">
           <RouterLink to="/login">Login</RouterLink>
         </li>
+        <li v-if="role === 'admin' || role === 'manger'" class="li">
+          <RouterLink to="/cars-create">Create cars</RouterLink>
+        </li>
         <li v-if="role === 'admin'" class="li">
           <RouterLink to="/admin">Admin</RouterLink>
         </li>

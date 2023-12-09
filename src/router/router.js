@@ -7,6 +7,7 @@ import NotFound from '../views/NotFound.vue'
 import Admin from '../views/Admin/Admin.vue'
 import AdminEdit from '../views/Admin/AdminEdit.vue'
 import { useUserStore } from '../store/userStore';
+import CarsCreate from '../views/CarsCreate.vue'
 
 
 function validateAdmin() {
@@ -24,6 +25,7 @@ const routes = [
     { path: '/admin', component: Admin, beforeEnter: validateAdmin },
     { path: '/adminEdit/:_id', component: AdminEdit, beforeEnter: validateAdmin },
     { path: '/notfound', component: NotFound },
+    { path: '/cars-create', component: CarsCreate },
 
 ];
 
