@@ -8,7 +8,7 @@ import Admin from '../views/Admin/Admin.vue'
 import AdminEdit from '../views/Admin/AdminEdit.vue'
 import { useUserStore } from '../store/userStore';
 import CarsCreate from '../views/CarsCreate.vue'
-
+import CarsDetails from '../views/CarsDetails.vue'
 
 function validateAdmin() {
     const userStore = useUserStore();
@@ -26,6 +26,8 @@ const routes = [
     { path: '/adminEdit/:_id', component: AdminEdit, beforeEnter: validateAdmin },
     { path: '/notfound', component: NotFound },
     { path: '/cars-create', component: CarsCreate },
+    { path: '/cars-details/:_id', component: CarsDetails },
+    { path: '/cars-edit/:_id', component: CarsCreate },
 
 ];
 

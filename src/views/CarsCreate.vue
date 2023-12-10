@@ -6,9 +6,10 @@ export default {
   setup: () => ({ v$: useVuelidate() }),
   data() {
     return {
+      _id: "",
       refN: "",
       brand: "",
-      model: "",
+      carModel: "",
       publicPrice: "",
       kilometers: "",
       description: "",
@@ -22,6 +23,8 @@ export default {
       documents: "",
       documentType: "",
       errorMessage: "",
+      editCar: false,
+      cars: {},
     };
   },
   validations() {
@@ -36,7 +39,7 @@ export default {
       brand: {
         required: helpers.withMessage("Brand is required!", required),
       },
-      model: {
+      carModel: {
         required: helpers.withMessage("Model is required!", required),
       },
       publicPrice: {
@@ -79,11 +82,13 @@ export default {
       const car = {
         refN: this.refN,
         brand: this.brand,
-        model: this.model,
+        carModel: this.carModel,
         publicPrice: this.publicPrice,
         kilometers: this.kilometers,
         description: this.description,
-        pictures: [this.pictures],
+        pictures: Array.isArray(this.pictures)
+          ? this.pictures
+          : [this.pictures],
         listPrice: this.listPrice,
         repairCost: this.repairCost,
         importDate: this.importDate,
@@ -106,14 +111,167 @@ export default {
           }, 5000);
         });
     },
+    async editCars() {
+      const isValid = await this.v$.$validate();
+      if (!isValid) return;
+
+      const car = {
+        refN: this.refN,
+        brand: this.brand,
+        carModel: this.carModel,
+        publicPrice: this.publicPrice,
+        kilometers: this.kilometers,
+        description: this.description,
+        pictures: Array.isArray(this.pictures)
+          ? this.pictures
+          : [this.pictures],
+        listPrice: this.listPrice,
+        repairCost: this.repairCost,
+        importDate: this.importDate,
+        driver: this.driver,
+        soldTo: this.soldTo,
+        loadedFrom: this.loadedFrom,
+        documents: this.documents,
+        documentType: this.documentType,
+      };
+      await carsService
+        .editCars(this.cars._id, car)
+        .then((data) => {
+          console.log("Cars edited in DB: ", data);
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          this.errorMessage = error.message;
+          setTimeout(() => {
+            this.errorMessage = "";
+          }, 5000);
+        });
+    },
+    async clearForm() {
+      this._id = "";
+      this.refN = "";
+      this.brand = "";
+      this.carModel = "";
+      this.publicPrice = "";
+      this.kilometers = "";
+      this.description = "";
+      this.pictures = "";
+      this.listPrice = "";
+      this.repairCost = "";
+      this.importDate = "";
+      this.driver = "";
+      this.soldTo = "";
+      this.loadedFrom = "";
+      this.documents = "";
+      this.documentType = "";
+      this.errorMessage = "";
+      this.v$.$reset();
+    },
+    async loadData(id) {
+      if (id) {
+        this.editCar = true;
+        await carsService
+          .findCarsById(id)
+          .then((data) => {
+            this.cars = data;
+            this._id = data._id;
+            this.refN = data.refN;
+            this.brand = data.brand;
+            this.carModel = data.carModel;
+            this.publicPrice = data.publicPrice;
+            this.kilometers = data.kilometers;
+            this.description = data.description;
+            this.pictures = data.pictures;
+            this.listPrice = data.listPrice;
+            this.repairCost = data.repairCost;
+            this.importDate = data.importDate.split("T")[0];
+            this.driver = data.driver;
+            this.soldTo = data.soldTo;
+            this.loadedFrom = data.loadedFrom;
+            this.documents = data.documents;
+            this.documentType = data.documentType;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
+    async carsDelete(id) {
+      await carsService
+        .deleteById(id)
+        .then((data) => {
+          console.log(data);
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    },
+  },
+  async beforeRouteLeave(to, from, next) {
+    if (from.matched[0].path === "/cars-edit/:_id") {
+      await this.clearForm();
+    }
+    next();
+  },
+  async beforeRouteEnter(to, from, next) {
+    if (to.matched[0].path === "/cars-edit/:_id") {
+      next((vm) => {
+        vm.loadData(to.params._id);
+      });
+    } else {
+      next();
+    }
+  },
+  async beforeRouteUpdate(to, from, next) {
+    if (to.matched[0].path === "/cars-edit/:_id") {
+      await loadData(to.params._id);
+    }
+    next();
+  },
+
+  async created() {
+    if (this.$route.matched[0].path === "/cars-edit/:_id") {
+      this.editCar = true;
+      await carsService
+        .findCarsById(this.$route.params._id)
+        .then((data) => {
+          this.cars = data;
+          this._id = data._id;
+          this.refN = data.refN;
+          this.brand = data.brand;
+          this.carModel = data.carModel;
+          this.publicPrice = data.publicPrice;
+          this.kilometers = data.kilometers;
+          this.description = data.description;
+          this.pictures = data.pictures;
+          this.listPrice = data.listPrice;
+          this.repairCost = data.repairCost;
+          this.importDate = data.importDate.split("T")[0];
+          this.driver = data.driver;
+          this.soldTo = data.soldTo;
+          this.loadedFrom = data.loadedFrom;
+          this.documents = data.documents;
+          this.documentType = data.documentType;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   },
 };
 </script>
 <template>
   <div id="create-div">
     <div id="create">
-      <form @submit.prevent="createCars" id="create-form" class="create">
-        <h2>CREATE CAR PAGE</h2>
+      <form
+        @submit.prevent="this.editCar ? editCars() : createCars()"
+        id="create-form"
+        class="create"
+      >
+        <h2>
+          {{ this.editCar ? "EDIT CAR PAGE" : "CREATE CAR PAGE" }}
+        </h2>
         <div :class="{ error: v$.refN.$errors.length }">
           <label for="refN">Ref num:</label>
           <input v-model="refN" type="number" id="refN" />
@@ -138,12 +296,12 @@ export default {
           </div>
         </div>
 
-        <div :class="{ error: v$.model.$errors.length }">
-          <label for="model">Model:</label>
-          <input v-model="model" type="text" id="model" />
+        <div :class="{ error: v$.carModel.$errors.length }">
+          <label for="carModel">Model:</label>
+          <input v-model="carModel" type="text" id="carModel" />
           <div
             class="input-errors"
-            v-for="error of v$.model.$errors"
+            v-for="error of v$.carModel.$errors"
             :key="error.$uid"
           >
             <div class="error-msg">{{ error.$message }}</div>
@@ -274,8 +432,9 @@ export default {
         </div>
 
         <button type="submit" class="create-input btnSubmit">
-          Create Record
+          {{ this.editCar ? "Edit car" : "Create Record" }}
         </button>
+        <button type="button" @click="carsDelete(cars._id)">Delete car</button>
       </form>
     </div>
   </div>

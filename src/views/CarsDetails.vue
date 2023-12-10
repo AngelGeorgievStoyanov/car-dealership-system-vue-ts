@@ -9,10 +9,11 @@ export default {
     };
   },
   async created() {
+
     await carsService
-      .getAllCars()
+      .findCarsById(this.$route.params._id)
       .then((data) => {
-        this.cars = data;
+        this.cars = Array(data);
       })
       .catch((err) => {
         console.log(err.message);
