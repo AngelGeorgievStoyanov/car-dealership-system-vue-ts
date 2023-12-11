@@ -1,6 +1,6 @@
 <script>
 import * as carsService from "../services/carsService";
-import CarsCard from "./components/CarsCard.vue"
+import CarsCard from "./components/CarsCard.vue";
 export default {
   components: { CarsCard },
   data() {
@@ -9,14 +9,14 @@ export default {
     };
   },
   async created() {
-
     await carsService
       .findCarsById(this.$route.params._id)
       .then((data) => {
         this.cars = Array(data);
       })
-      .catch((err) => {
-        console.log(err.message);
+      .catch((error) => {
+        console.log(error.message || error);
+        this.$router.push("/");
       });
   },
 };

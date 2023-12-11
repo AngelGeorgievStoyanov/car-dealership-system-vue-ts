@@ -14,7 +14,7 @@ export async function regisrer(user) {
 
     if (response.status >= 400) {
         const result = await response.json();
-        throw new Error(result);
+        throw new Error(result.message || result);
     }
 
     return response.json()
@@ -34,7 +34,7 @@ export async function login(email, password) {
 
     if (response.status >= 400) {
         const result = await response.json();
-        throw new Error(result);
+        throw new Error(result.message || result);
     }
 
 
@@ -45,7 +45,7 @@ export async function getAllUsers() {
     const response = await fetch(`${API_URL}/users/`)
     if (response.status >= 400) {
         const result = await response.json();
-        throw new Error(result);
+        throw new Error(result.message || result);
     }
     return response.json();
 }
@@ -55,7 +55,7 @@ export async function findUserById(id) {
     const response = await fetch(`${API_URL}/users/${id}`)
     if (response.status >= 400) {
         const result = await response.json();
-        throw new Error(result);
+        throw new Error(result.message || result);
     }
     return response.json();
 }
@@ -72,7 +72,7 @@ export async function editUser(id, user) {
     })
     if (response.status >= 400) {
         const result = await response.json();
-        throw new Error(result);
+        throw new Error(result.message || result);
     }
     return response.json();
 }

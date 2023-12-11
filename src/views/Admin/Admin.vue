@@ -14,8 +14,8 @@ export default {
       .then((data) => {
         this.users = data;
       })
-      .catch((err) => {
-        console.log(err.message);
+      .catch((error) => {
+        console.log(error.message || error);
       });
   },
 };
@@ -28,15 +28,12 @@ export default {
 </template>
 
 <style scoped>
-.div-users{
+.div-users {
   display: grid;
   justify-items: center;
   grid-template-columns: repeat(var(--user-cols, 1), 1fr);
   gap: 1rem;
 }
-
-
-
 
 @media screen and (min-width: 820px) {
   .div-users {

@@ -38,7 +38,8 @@ export default {
     <h3>Brand: {{ cars.brand }}</h3>
     <h3>Model: {{ cars.carModel }}</h3>
     <h3>
-      Price: {{ _id ? cars.publicPrice : "Please login to see price!" }} lv.
+       {{ _id ? 'Price: '+ cars.publicPrice +' lv.': 'Please login to see the price!' }}
+    
     </h3>
     <h5>Kilometers: {{ cars.kilometers }} km.</h5>
     <p>description: {{ cars.description }}</p>

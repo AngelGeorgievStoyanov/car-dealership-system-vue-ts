@@ -1,6 +1,6 @@
 <script>
 import * as carsService from "../services/carsService";
-import CarsCard from "./components/CarsCard.vue"
+import CarsCard from "./components/CarsCard.vue";
 export default {
   components: { CarsCard },
   data() {
@@ -14,8 +14,8 @@ export default {
       .then((data) => {
         this.cars = data;
       })
-      .catch((err) => {
-        console.log(err.message);
+      .catch((error) => {
+        console.log(error.message || error);
       });
   },
 };
@@ -24,6 +24,10 @@ export default {
 <template>
   <div class="div-cars" v-if="cars.length > 0">
     <CarsCard v-for="car in cars" :key="car._id" :cars="car"></CarsCard>
+  </div>
+  <div class="div-cars" v-else>
+    <h3>Welcome!</h3>
+    <p>No cars available</p>
   </div>
 </template>
 

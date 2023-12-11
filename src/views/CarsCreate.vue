@@ -105,7 +105,7 @@ export default {
           this.$router.push("/");
         })
         .catch((error) => {
-          this.errorMessage = error.message;
+          this.errorMessage = error.message || error;
           setTimeout(() => {
             this.errorMessage = "";
           }, 5000);
@@ -138,10 +138,10 @@ export default {
         .editCars(this.cars._id, car)
         .then((data) => {
           console.log("Cars edited in DB: ", data);
-          this.$router.push("/");
+          this.$router.push(`/cars-details/${data._id}`);
         })
         .catch((error) => {
-          this.errorMessage = error.message;
+          this.errorMessage = error.message || error;
           setTimeout(() => {
             this.errorMessage = "";
           }, 5000);
@@ -192,7 +192,8 @@ export default {
             this.documentType = data.documentType;
           })
           .catch((error) => {
-            console.log(error);
+            console.log(error.message || error);
+            this.$router.push("/");
           });
       }
     },
@@ -200,11 +201,10 @@ export default {
       await carsService
         .deleteById(id)
         .then((data) => {
-          console.log(data);
           this.$router.push("/");
         })
         .catch((error) => {
-          console.log(error.message);
+          console.log(error.message || error);
         });
     },
   },
@@ -255,7 +255,8 @@ export default {
           this.documentType = data.documentType;
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error.message || error);
+          this.$router.push("/");
         });
     }
   },

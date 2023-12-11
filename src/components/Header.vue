@@ -21,16 +21,13 @@ export default {
 <template>
   <header id="header" class="header">
     <nav id="nav" class="nav">
-      <ul class="nav-logo">
+      <ul id="nav-ul" class="nav-ul">
         <li id="logo">
           <RouterLink to="/">LOGO</RouterLink>
         </li>
         <li class="li" v-if="email">
           <RouterLink to="/">Welcome {{ this.email }}!</RouterLink>
         </li>
-      </ul>
-
-      <ul id="nav-ul" class="nav-ul">
         <li class="li">
           <RouterLink to="/">Home</RouterLink>
         </li>
@@ -55,17 +52,23 @@ export default {
 </template>
 
 <style scoped>
+.header {
+  display: flex;
+  width: 100vw;
+}
 nav#nav,
 .nav-logo {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   background-color: black;
   color: white;
+  width: 100%;
 }
 
 ul#nav-ul {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
   margin-right: 10px;
@@ -78,8 +81,7 @@ ul#nav-ul {
 }
 
 li {
-  margin-right: 10px;
-  margin-left: 10px;
+  margin: 5px;
   padding-right: 10px;
   padding-left: 10px;
   list-style-type: none;
@@ -100,7 +102,7 @@ li > a {
     margin: 0;
   }
 
-  #header {
+  .header {
     width: 100%;
   }
 

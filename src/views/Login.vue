@@ -43,7 +43,8 @@ export default {
           this.$router.push("/");
         })
         .catch((error) => {
-          this.errorMessage = error.message;
+          console.log(error.message || error);
+          this.errorMessage = error.message || error;
           setTimeout(() => {
             this.errorMessage = "";
           }, 5000);

@@ -15,7 +15,7 @@ p {
 }
 #footer {
   bottom: 0;
-  width: 100%;
+  width: 100vw;
   height: auto;
   background-color: black;
   color: white;

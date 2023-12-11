@@ -20,7 +20,7 @@ export default {
         this.user = data;
       })
       .catch((error) => {
-        console.log(error.message);
+        console.log(error.message || error);
       });
   },
   methods: {
@@ -38,9 +38,10 @@ export default {
           .editUser(user._id, user)
           .then((data) => {
             this.user = data;
+            this.$router.push("/admin");
           })
           .catch((error) => {
-            console.log(error.message);
+            console.log(error.message || error);
           });
       }
     },
