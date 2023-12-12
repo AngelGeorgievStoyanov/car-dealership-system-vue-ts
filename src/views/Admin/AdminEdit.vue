@@ -11,7 +11,18 @@ export default {
         email: "",
         role: "",
       },
+      changed: true,
     };
+  },
+  watch: {
+    "user.role": {
+      handler(newValue, oldValue) {
+        if (oldValue !== "" && oldValue != newValue) {
+          this.changed = false;
+        }
+      },
+      deep: true,
+    },
   },
   async created() {
     await userService
@@ -29,7 +40,7 @@ export default {
         firstName: this.user.firstName,
         lastName: this.user.lastName,
         email: this.user.email,
-        role: this.user.role,
+        role: this.user.email === "admin@admin.bg" ? "admin" : this.user.role,
         _id: this.user._id,
       };
 
@@ -67,13 +78,19 @@ export default {
       </div>
       <div>
         <label for="role">Role:</label>
-        <select v-model="user.role">
+        <select :disabled="user.email === 'admin@admin.bg'" v-model="user.role">
           <option value="user">User</option>
           <option value="manager">Manager</option>
           <option value="admin">Admin</option>
         </select>
       </div>
-      <button class="btnEdit" type="submit">Update User</button>
+      <button
+        :disabled="changed"
+        :class="changed ? 'btnEditDis' : 'btnEdit'"
+        type="submit"
+      >
+        Update User
+      </button>
     </form>
   </div>
 </template>
@@ -95,6 +112,9 @@ export default {
   min-width: 320px;
   box-shadow: 3px 2px 5px black;
   background-color: #8d868670;
+}
+.btnEditDis {
+  margin-top: 60px;
 }
 .btnEdit {
   margin-top: 60px;

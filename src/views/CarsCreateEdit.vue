@@ -19,6 +19,7 @@ export default {
       errorMessage: "",
       editCar: false,
       cars: {},
+      hasChanges: true,
     };
   },
   validations() {
@@ -48,6 +49,53 @@ export default {
         required: helpers.withMessage("Documents is required!", required),
       },
     };
+  },
+  watch: {
+    refN(newValue, oldValue) {
+      if (!!oldValue && oldValue != newValue) {
+        this.hasChanges = false;
+      }
+    },
+    brand(newValue, oldValue) {
+      if (!!oldValue && oldValue != newValue) {
+        this.hasChanges = false;
+      }
+    },
+    carModel(newValue, oldValue) {
+      if (!!oldValue && oldValue != newValue) {
+        this.hasChanges = false;
+      }
+    },
+    publicPrice(newValue, oldValue) {
+      if (!!oldValue && oldValue != newValue) {
+        this.hasChanges = false;
+      }
+    },
+    kilometers(newValue, oldValue) {
+      if (!!oldValue && oldValue != newValue) {
+        this.hasChanges = false;
+      }
+    },
+    description(newValue, oldValue) {
+      if (!!oldValue && oldValue != newValue) {
+        this.hasChanges = false;
+      }
+    },
+    pictures(newValue, oldValue) {
+      if (!!oldValue && JSON.stringify(oldValue) !== JSON.stringify(newValue)) {
+        this.hasChanges = false;
+      }
+    },
+    importDate(newValue, oldValue) {
+      if (!!oldValue && oldValue != newValue) {
+        this.hasChanges = false;
+      }
+    },
+    documents(newValue, oldValue) {
+      if (!!oldValue && oldValue != newValue) {
+        this.hasChanges = false;
+      }
+    },
   },
   methods: {
     async createCars() {
@@ -129,11 +177,13 @@ export default {
       this.errorMessage = "";
       this.documents = "";
       this.editCar = false;
+      this.hasChanges = true;
       this.v$.$reset();
     },
     async loadData(id) {
       if (id) {
         this.editCar = true;
+        this.hasChanges = true;
         await carsService
           .findCarsById(id)
           .then((data) => {
@@ -329,7 +379,12 @@ export default {
             <div class="error-msg">{{ error.$message }}</div>
           </div>
         </div>
-        <button type="submit" class="create-input btnSubmit">
+
+        <button
+          :disabled="hasChanges"
+          type="submit"
+          :class="hasChanges ? 'btnSubmitDis' : 'btnSubmit'"
+        >
           {{ this.editCar ? "Edit car" : "Create Record" }}
         </button>
         <button
@@ -376,6 +431,12 @@ export default {
   align-items: flex-end;
   height: auto;
   padding: 20px;
+}
+
+.btnSubmitDis {
+  width: 50%;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .btnSubmit {

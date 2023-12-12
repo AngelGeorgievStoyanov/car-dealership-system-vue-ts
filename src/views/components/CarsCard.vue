@@ -58,7 +58,7 @@ export default {
     </button>
     <button
       class="btnEdit"
-      v-if="role === 'admin' || role === 'manger'"
+      v-if="role === 'admin' || role === 'manager'"
       @click="carsEdit"
     >
       Edit
