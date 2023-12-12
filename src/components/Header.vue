@@ -8,9 +8,10 @@ export default {
   components: {
     RouterLink,
   },
-  computed: {
+    computed: {
     ...mapState(useUserStore, ["email"]),
     ...mapState(useUserStore, ["role"]),
+    ...mapState(useUserStore, ["_id"]),
   },
   methods: {
     ...mapActions(useUserStore, ["logout"]),
@@ -26,7 +27,9 @@ export default {
           <RouterLink to="/">LOGO</RouterLink>
         </li>
         <li class="li" v-if="email">
-          <RouterLink to="/">Welcome {{ this.email }}!</RouterLink>
+          <RouterLink :to="`/profile/${_id}`"
+            >Welcome {{ this.email }}!</RouterLink
+          >
         </li>
         <li class="li">
           <RouterLink to="/">Home</RouterLink>

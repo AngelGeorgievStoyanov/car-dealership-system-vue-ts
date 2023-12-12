@@ -50,9 +50,9 @@ export default {
 </script>
 
 <template>
-  <div>
-    <h1>Edit User</h1>
+  <div class="div-admin">
     <form @submit.prevent="updateUser" class="admin-edit-form">
+      <h2>Edit user role</h2>
       <div>
         <label for="firstName">First Name:</label>
         <h3>{{ user.firstName }}</h3>
@@ -73,9 +73,34 @@ export default {
           <option value="admin">Admin</option>
         </select>
       </div>
-      <button type="submit">Update User</button>
+      <button class="btnEdit" type="submit">Update User</button>
     </form>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.div-admin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.admin-edit-form {
+  display: flex;
+  flex-direction: column;
+  border: solid 1px black;
+  height: fit-content;
+  width: fit-content;
+  padding: 20px;
+  margin: 20px;
+  min-width: 320px;
+  box-shadow: 3px 2px 5px black;
+  background-color: #8d868670;
+}
+.btnEdit {
+  margin-top: 60px;
+}
+.btnEdit:hover {
+  background-color: green;
+  color: white;
+}
+</style>

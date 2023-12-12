@@ -38,19 +38,29 @@ export default {
     <h3>Brand: {{ cars.brand }}</h3>
     <h3>Model: {{ cars.carModel }}</h3>
     <h3>
-       {{ _id ? 'Price: '+ cars.publicPrice +' lv.': 'Please login to see the price!' }}
-    
+      {{
+        _id
+          ? "Price: " + cars.publicPrice + " lv."
+          : "Please login to see the price!"
+      }}
     </h3>
     <h5>Kilometers: {{ cars.kilometers }} km.</h5>
     <p>description: {{ cars.description }}</p>
-    <img :src="cars.pictures" alt="Car Image" height="200" width="300" />
+    <div>
+      <img :src="cars.pictures" alt="Car Image" height="200" width="300" />
+    </div>
     <button
+      class="btnDetails"
       v-if="_id && this.$route.matched[0].path != '/cars-details/:_id'"
       @click="carsDetails"
     >
       Details
     </button>
-    <button v-if="role === 'admin' || role === 'manger'" @click="carsEdit">
+    <button
+      class="btnEdit"
+      v-if="role === 'admin' || role === 'manger'"
+      @click="carsEdit"
+    >
       Edit
     </button>
   </section>
@@ -60,11 +70,27 @@ export default {
 .card-cars {
   display: flex;
   flex-direction: column;
-  border: solid 1px;
+  border: solid 1px black;
   height: fit-content;
   width: fit-content;
   padding: 20px;
   margin: 20px;
   min-width: 320px;
+  box-shadow: 3px 2px 5px black;
+  background-color: #8d868670;
+}
+
+.btnEdit,
+.btnDetails {
+  margin: 5px;
+}
+
+.btnEdit:hover {
+  background-color: green;
+  color: white;
+}
+.btnDetails:hover {
+  background-color: #181616bd;
+  color: white;
 }
 </style>

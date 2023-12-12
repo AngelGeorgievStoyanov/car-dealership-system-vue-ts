@@ -30,21 +30,8 @@ export default {
 
 <style scoped>
 .div-cars {
-  display: grid;
-  justify-items: center;
-  grid-template-columns: repeat(var(--user-cols, 1), 1fr);
-  gap: 1rem;
-}
-
-@media screen and (min-width: 820px) {
-  .div-cars {
-    --user-cols: 2;
-  }
-}
-
-@media screen and (min-width: 1260px) {
-  .div-cars {
-    --user-cols: 3;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

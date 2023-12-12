@@ -108,8 +108,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  border: 2px black solid;
-  border-radius: 12px;
+  border: 1px black solid;
   padding: 60px 10px;
   height: 360px;
   justify-content: space-around;
@@ -123,6 +122,7 @@ export default {
   padding: 5px;
   border-radius: 5px;
   width: 44%;
+  color: white;
 }
 
 .form {

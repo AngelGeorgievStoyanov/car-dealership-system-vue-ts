@@ -6,9 +6,10 @@ import NotFound from '../views/NotFound.vue';
 import Admin from '../views/Admin/Admin.vue';
 import AdminEdit from '../views/Admin/AdminEdit.vue';
 import { useUserStore } from '../store/userStore';
-import CarsCreate from '../views/CarsCreate.vue';
+import CarsCreateEdit from '../views/CarsCreateEdit.vue';
 import CarsDetails from '../views/CarsDetails.vue';
 import * as userService from '../services/userService';
+import Profile from '../views/Profile.vue';
 
 async function validateAdmin() {
     const userStore = useUserStore();
@@ -55,9 +56,10 @@ const routes = [
     { path: '/admin', component: Admin, beforeEnter: validateAdmin },
     { path: '/adminEdit/:_id', component: AdminEdit, beforeEnter: validateAdmin },
     { path: '/notfound', component: NotFound },
-    { path: '/cars-create', component: CarsCreate, beforeEnter: validateManagerAdmin },
+    { path: '/cars-create', component: CarsCreateEdit, beforeEnter: validateManagerAdmin },
     { path: '/cars-details/:_id', component: CarsDetails, beforeEnter: validateUser },
-    { path: '/cars-edit/:_id', component: CarsCreate, beforeEnter: validateManagerAdmin },
+    { path: '/cars-edit/:_id', component: CarsCreateEdit, beforeEnter: validateManagerAdmin },
+    { path: '/profile/:_id', component: Profile, beforeEnter: validateUser },
     { path: '/:pathMatch(.*)*', component: NotFound },
 
 ];

@@ -93,7 +93,7 @@ export default {
           </div>
         </div>
 
-        <div :class="{ error: v$.lastName.length }">
+        <div :class="{ error: v$.lastName.$errors.length }">
           <label for="lastName">Last Name:</label>
           <input v-model="lastName" type="text" id="lastName" />
           <div
@@ -143,7 +143,7 @@ export default {
           </div>
         </div>
 
-        <button type="submit" class="register-input btnSubmit">Sign Up</button>
+        <button type="submit" class="btnSubmit">Sign Up</button>
         <h4>
           <RouterLink class="register-input" to="/login"
             >Already Have An Account?</RouterLink
@@ -170,10 +170,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px black solid;
-  border-radius: 12px;
+  border: 1px black solid;
   padding: 10px;
-
   justify-content: space-around;
   background-color: #8d868670;
   box-shadow: 3px 2px 5px black;
@@ -193,6 +191,10 @@ export default {
   cursor: pointer;
   background-color: #181616bd;
   color: white;
+}
+
+.register-input {
+   color: white;
 }
 
 .error {

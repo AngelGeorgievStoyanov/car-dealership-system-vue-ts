@@ -14,14 +14,8 @@ export default {
       kilometers: "",
       description: "",
       pictures: "",
-      listPrice: "",
-      repairCost: "",
       importDate: "",
-      driver: "",
-      soldTo: "",
-      loadedFrom: "",
       documents: "",
-      documentType: "",
       errorMessage: "",
       editCar: false,
       cars: {},
@@ -31,10 +25,6 @@ export default {
     return {
       refN: {
         required: helpers.withMessage("Ref num is required!", required),
-        // numeric: helpers.withMessage(
-        //   (value) => !isNaN(value) && Number.isInteger(Number(value)),
-        //   { message: "Ref num must be an integer." }
-        // ),
       },
       brand: {
         required: helpers.withMessage("Brand is required!", required),
@@ -51,26 +41,11 @@ export default {
       description: {
         required: helpers.withMessage("Description is required!", required),
       },
-      listPrice: {
-        required: helpers.withMessage("List price is required!", required),
-      },
       importDate: {
-        required: helpers.withMessage("Date of import is required!", required),
-      },
-      driver: {
-        required: helpers.withMessage("Driver name is required!", required),
-      },
-      loadedFrom: {
-        required: helpers.withMessage("Loaded from is required!", required),
+        required: helpers.withMessage("Date of car is required!", required),
       },
       documents: {
         required: helpers.withMessage("Documents is required!", required),
-      },
-      documentType: {
-        required: helpers.withMessage(
-          "Type of documents is required!",
-          required
-        ),
       },
     };
   },
@@ -116,7 +91,7 @@ export default {
       if (!isValid) return;
 
       const car = {
-        refN: this.refN,
+        refN: this.cars.refN,
         brand: this.brand,
         carModel: this.carModel,
         publicPrice: this.publicPrice,
@@ -125,14 +100,8 @@ export default {
         pictures: Array.isArray(this.pictures)
           ? this.pictures
           : [this.pictures],
-        listPrice: this.listPrice,
-        repairCost: this.repairCost,
         importDate: this.importDate,
-        driver: this.driver,
-        soldTo: this.soldTo,
-        loadedFrom: this.loadedFrom,
         documents: this.documents,
-        documentType: this.documentType,
       };
       await carsService
         .editCars(this.cars._id, car)
@@ -156,15 +125,10 @@ export default {
       this.kilometers = "";
       this.description = "";
       this.pictures = "";
-      this.listPrice = "";
-      this.repairCost = "";
       this.importDate = "";
-      this.driver = "";
-      this.soldTo = "";
-      this.loadedFrom = "";
-      this.documents = "";
-      this.documentType = "";
       this.errorMessage = "";
+      this.documents = "";
+      this.editCar = false;
       this.v$.$reset();
     },
     async loadData(id) {
@@ -183,13 +147,8 @@ export default {
             this.description = data.description;
             this.pictures = data.pictures;
             this.listPrice = data.listPrice;
-            this.repairCost = data.repairCost;
             this.importDate = data.importDate.split("T")[0];
-            this.driver = data.driver;
-            this.soldTo = data.soldTo;
-            this.loadedFrom = data.loadedFrom;
             this.documents = data.documents;
-            this.documentType = data.documentType;
           })
           .catch((error) => {
             console.log(error.message || error);
@@ -245,14 +204,8 @@ export default {
           this.kilometers = data.kilometers;
           this.description = data.description;
           this.pictures = data.pictures;
-          this.listPrice = data.listPrice;
-          this.repairCost = data.repairCost;
           this.importDate = data.importDate.split("T")[0];
-          this.driver = data.driver;
-          this.soldTo = data.soldTo;
-          this.loadedFrom = data.loadedFrom;
           this.documents = data.documents;
-          this.documentType = data.documentType;
         })
         .catch((error) => {
           console.log(error.message || error);
@@ -350,23 +303,8 @@ export default {
           <input v-model="pictures" type="text" id="pictures" />
         </div>
 
-        <div :class="{ error: v$.listPrice.$errors.length }">
-          <label for="listPrice">List Price:</label>
-          <input v-model="listPrice" type="number" id="listPrice" />
-          <div
-            class="input-errors"
-            v-for="error of v$.listPrice.$errors"
-            :key="error.$uid"
-          >
-            <div class="error-msg">{{ error.$message }}</div>
-          </div>
-        </div>
-        <div>
-          <label for="repairCost">Repair Cost:</label>
-          <input v-model="repairCost" type="number" id="repairCost" />
-        </div>
-        <div :class="{ error: v$.driver.$errors.length }">
-          <label for="importDate">Import Date:</label>
+        <div :class="{ error: v$.importDate.$errors.length }">
+          <label for="importDate">Date:</label>
           <input v-model="importDate" type="date" id="importDate" />
           <div
             class="input-errors"
@@ -377,34 +315,6 @@ export default {
           </div>
         </div>
 
-        <div :class="{ error: v$.driver.$errors.length }">
-          <label for="driver">Driver name:</label>
-          <input v-model="driver" type="text" id="driver" />
-          <div
-            class="input-errors"
-            v-for="error of v$.driver.$errors"
-            :key="error.$uid"
-          >
-            <div class="error-msg">{{ error.$message }}</div>
-          </div>
-        </div>
-
-        <div>
-          <label for="soldTo">Sold to:</label>
-          <input v-model="soldTo" type="text" id="soldTo" />
-        </div>
-
-        <div :class="{ error: v$.loadedFrom.$errors.length }">
-          <label for="loadedFrom">Loaded from:</label>
-          <input v-model="loadedFrom" type="text" id="loadedFrom" />
-          <div
-            class="input-errors"
-            v-for="error of v$.loadedFrom.$errors"
-            :key="error.$uid"
-          >
-            <div class="error-msg">{{ error.$message }}</div>
-          </div>
-        </div>
         <div :class="{ error: v$.documents.$errors.length }">
           <label for="documents">Documents:</label>
           <select v-model="documents" id="documents">
@@ -419,23 +329,17 @@ export default {
             <div class="error-msg">{{ error.$message }}</div>
           </div>
         </div>
-
-        <div :class="{ error: v$.documentType.$errors.length }">
-          <label for="documentType">Document Type:</label>
-          <input v-model="documentType" type="text" id="documentType" />
-          <div
-            class="input-errors"
-            v-for="error of v$.documentType.$errors"
-            :key="error.$uid"
-          >
-            <div class="error-msg">{{ error.$message }}</div>
-          </div>
-        </div>
-
         <button type="submit" class="create-input btnSubmit">
           {{ this.editCar ? "Edit car" : "Create Record" }}
         </button>
-        <button type="button" @click="carsDelete(cars._id)">Delete car</button>
+        <button
+          v-if="this.editCar"
+          class="btnDelete"
+          type="button"
+          @click="carsDelete(cars._id)"
+        >
+          Delete car
+        </button>
       </form>
     </div>
   </div>
@@ -457,12 +361,12 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px black solid;
-  border-radius: 12px;
+  border: 1px black solid;
   padding: 10px;
   justify-content: space-around;
   background-color: #8d868670;
   box-shadow: 3px 2px 5px black;
+  margin: 20px;
 }
 
 #create-form {
@@ -478,6 +382,26 @@ export default {
   width: 50%;
   cursor: pointer;
   background-color: #181616bd;
+  color: white;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+.btnSubmit:hover {
+  background-color: green;
+  color: white;
+}
+
+.btnDelete {
+  width: 50%;
+  cursor: pointer;
+  background-color: #181616bd;
+  color: white;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.btnDelete:hover {
+  background-color: red;
   color: white;
 }
 
