@@ -216,6 +216,14 @@ export default {
           console.log(error.message || error);
         });
     },
+    showDeleteConfirmationDialog(id) {
+      const confirmed = window.confirm(
+        "Are you sure you want to delete the car?"
+      );
+      if (confirmed) {
+        this.carsDelete(id);
+      }
+    },
   },
   async beforeRouteLeave(to, from, next) {
     if (from.matched[0].path === "/cars-edit/:_id") {
@@ -391,7 +399,7 @@ export default {
           v-if="this.editCar"
           class="btnDelete"
           type="button"
-          @click="carsDelete(cars._id)"
+          @click="showDeleteConfirmationDialog(cars._id)"
         >
           Delete car
         </button>
